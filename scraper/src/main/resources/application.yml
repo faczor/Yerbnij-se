@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+app:
+  testing: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+app:
+  testing: false
