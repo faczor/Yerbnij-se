@@ -1,57 +1,43 @@
 package com.yerbnijse.scraper.model;
 
-import static com.yerbnijse.scraper.utils.ObjectMapper.stringToAmount;
-import static com.yerbnijse.scraper.utils.ObjectMapper.stringToPrice;
+import com.yerbnijse.scraper.scrapingTool.Strategy;
+import com.yerbnijse.scraper.scrapingTool.Transformer;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jsoup.nodes.Element;
 
+@ToString
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResultData {
-    String domainName;
-    String productName;
-    Integer productAmount;
-    Double productPrice;
-    String productImage;
+  private String domainName;
+  private String productName;
+  private Integer productAmount;
+  private Double productPrice;
+  private String productImage;
+  private String productLink;
 
-    private ResultData(Builder builder) {
-        this.domainName = builder.domainName;
-        this.productName = builder.productName;
-        this.productAmount = builder.productAmount;
-        this.productPrice = builder.productPrice;
-        this.productImage = builder.productImage;
+  public static ResultData of(Strategy strategy, Transformer transformer, Element element) {
+    ResultData data = new ResultData();
+    data.domainName = strategy.getDomainName();
+    Pair<String, Integer> nameAmount = transformer.extractFromTitle(strategy.extractProductName(element));
+    data.productName = nameAmount.getLeft();
+    data.productAmount = nameAmount.getRight();
+    data.productPrice = transformer.extractPrice(strategy.extractPrice(element));
+    data.productImage = strategy.extractImage(element);
+    data.productLink = strategy.extractLink(element);
+    return data;
+  }
+
+  public boolean isUnknown() {
+    boolean isUnknown = this.productName == null || this.productAmount == null || this.productPrice == null;
+    if (isUnknown) {
+      log.info("Delete from list: " + this);
+      return true;
     }
-
-    public static class Builder {
-        private String domainName;
-        private String productName;
-        private Integer productAmount;
-        private Double productPrice;
-        private String productImage;
-
-        public Builder domainName(String value) {
-            domainName = value;
-            return this;
-        }
-
-        public Builder productName(String value) {
-            productName = value;
-            return this;
-        }
-
-        public Builder productAmount(String value) {
-            productAmount = stringToAmount(value);
-            return this;
-        }
-
-        public Builder productPrice(String value) {
-            productPrice = stringToPrice(value);
-            return this;
-        }
-
-        public Builder productImage(String value) {
-            productImage = value;
-            return this;
-        }
-
-        public ResultData build() {
-            return new ResultData(this);
-        }
-    }
+    return false;
+  }
 }

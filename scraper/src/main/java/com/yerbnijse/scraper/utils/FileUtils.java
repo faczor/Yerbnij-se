@@ -13,7 +13,7 @@ public class FileUtils {
 
   @SneakyThrows
   public static String getMock(Strategy strategy) {
-    InputStream resource = new ClassPathResource("/mocks/" + strategy.getMockFileName()).getInputStream();
+    InputStream resource = new ClassPathResource("mocks/" + strategy.getMockFileName()).getInputStream();
     try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(resource))) {
       return reader.lines().collect(Collectors.joining("\n"));

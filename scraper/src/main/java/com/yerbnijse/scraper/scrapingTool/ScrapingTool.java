@@ -15,27 +15,28 @@ import java.util.LinkedList;
 @RequiredArgsConstructor
 public class ScrapingTool {
 
-    @Value("#{new Boolean('${app.testing}')}")
-    private boolean isTest;
+  @Value("#{new Boolean('${app.testing}')}")
+  private boolean isTest;
 
-    private final  StrategyFactory strategyFactory;
+  private final StrategyFactory strategyFactory;
 
-    @EventListener
-    public void processPage(ScrapingEvent event) {
-        Strategy strategy = strategyFactory.of(event.getDomain());
-        LinkedList<ResultData> resultData = new LinkedList<>();
-        Client client = new Client(isTest);
-        Document domainResponse = Jsoup.parse(client.request(strategy));
-        for (Element product : strategy.extractProducts(domainResponse)) {
-            resultData.add(
-                    new ResultData.Builder()
-                            .domainName(strategy.getDomainName())
-                            .productName(strategy.extractProductName(product))
-                            .productPrice(strategy.extractPrice(product))
-                            .productAmount(strategy.extractAmount(product))
-                            .productImage(strategy.extractImage(product))
-                            .build());
-        }
-        System.out.println(resultData);
+  @EventListener
+  public void processPage(ScrapingEvent event) {
+    Strategy strategy = strategyFactory.of(event.getDomain());
+    LinkedList<ResultData> resultData = new LinkedList<>();
+    Client client = new Client(isTest);
+    Transformer transformer = TransformerFactory.of(event.getDomain());
+    for (int i = 0; i < strategy.getProductListLink().size(); i++) {
+      Document domainResponse = Jsoup.parse(client.request(strategy, i));
+      for (Element product : strategy.extractProducts(domainResponse)) {
+        resultData.add(ResultData.of(strategy, transformer, product));
+      }
     }
+    cleanFromUnknownItems(resultData);
+    client.pushData(resultData);
+  }
+
+  private void cleanFromUnknownItems(LinkedList<ResultData> resultData) {
+    resultData.removeIf(ResultData::isUnknown);
+  }
 }
