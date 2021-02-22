@@ -1,14 +1,4 @@
-spring:
-  config:
-    activate:
-      on-profile: local
-app:
-  testing: false
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
+server:
+  port: 8081
 app:
   testing: false

@@ -15,8 +15,8 @@ import java.util.LinkedList;
 @RequiredArgsConstructor
 public class ScrapingTool {
 
-  @Value("#{new Boolean('${app.testing}')}")
-  private boolean isTest;
+  /*@Value("#{new Boolean('${app.testing}')}")
+  private boolean isTest;*/
 
   private final StrategyFactory strategyFactory;
 
@@ -24,7 +24,7 @@ public class ScrapingTool {
   public void processPage(ScrapingEvent event) {
     Strategy strategy = strategyFactory.of(event.getDomain());
     LinkedList<ResultData> resultData = new LinkedList<>();
-    Client client = new Client(isTest);
+    Client client = new Client(true);
     Transformer transformer = TransformerFactory.of(event.getDomain());
     for (int i = 0; i < strategy.getProductListLink().size(); i++) {
       Document domainResponse = Jsoup.parse(client.request(strategy, i));
@@ -33,7 +33,8 @@ public class ScrapingTool {
       }
     }
     cleanFromUnknownItems(resultData);
-    client.pushData(resultData);
+    boolean result = client.pushData(resultData);
+    System.out.println(result);
   }
 
   private void cleanFromUnknownItems(LinkedList<ResultData> resultData) {

@@ -2,12 +2,27 @@ package com.yerbnijse.scraper.scrapingTool;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.yerbnijse.scraper.model.ResultData;
 import com.yerbnijse.scraper.utils.FileUtils;
 import lombok.SneakyThrows;
 import okhttp3.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.http.HttpHeaders;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -34,16 +49,23 @@ public class Client {
     }
   }
 
-  //@SneakyThrows({JsonProcessingException.class, IOException.class})
   public boolean pushData(List<ResultData> data) {
-    /*Request request = new Request.Builder()
-            .url("https://localhost:8080/dummy")
-            .put(RequestBody.create(MediaType.parse("application/json"), OBJECT_MAPPER.writeValueAsString(data)))
-            .build();
-    try(Response response = client.newCall(request).execute()) {
-      return response.isSuccessful();
-    }*/
-    return true;
+    try {
+      System.out.println(data);
+      CloseableHttpClient client = HttpClients.createDefault();
+      HttpPost httpPost = new HttpPost("http://localhost:8080/domain");
+      String json = new Gson().toJson(data);
+      StringEntity entity = new StringEntity(json, "UTF-8");
+      httpPost.setEntity(entity);
+      httpPost.setHeader("Accept", "application/json");
+      httpPost.setHeader("Content-type", "application/json");
+      CloseableHttpResponse response = client.execute(httpPost);
+      System.out.println(response.getStatusLine().getStatusCode());
+      client.close();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+    return false;
   }
 
   private OkHttpClient createClient() {
