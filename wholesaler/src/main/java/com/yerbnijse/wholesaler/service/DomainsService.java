@@ -1,12 +1,19 @@
 package com.yerbnijse.wholesaler.service;
 
+import com.google.gson.Gson;
 import com.yerbnijse.wholesaler.configuration.ScrapingEvent;
 import com.yerbnijse.wholesaler.dto.DomainData;
+import com.yerbnijse.wholesaler.dto.DomainOutput;
 import com.yerbnijse.wholesaler.model.*;
 import com.yerbnijse.wholesaler.repository.DobreZieleRepository;
 import com.yerbnijse.wholesaler.repository.PoyerbaniRepository;
 import com.yerbnijse.wholesaler.repository.UnMateRepository;
 import lombok.AllArgsConstructor;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -52,7 +60,29 @@ public class DomainsService {
       }
     }
 
-    System.out.println(saveData(dataToLoad, event.getDomain()));
+    saveData(dataToLoad, event.getDomain());
+
+    if (!dataToLoad.isEmpty()) {
+      pushData(dataToLoad.stream().map(x -> DomainOutput.fromData(x, event.getDomain()))
+          .collect(toList()));
+    }
+  }
+
+  public boolean pushData(List<DomainOutput> data) {
+    try {
+      CloseableHttpClient client = HttpClients.createDefault();
+      HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/offer/add");
+      String json = new Gson().toJson(data);
+      StringEntity entity = new StringEntity(json, "UTF-8");
+      httpPost.setEntity(entity);
+      httpPost.setHeader("Accept", "application/json");
+      httpPost.setHeader("Content-type", "application/json");
+      CloseableHttpResponse response = client.execute(httpPost);
+      client.close();
+    } catch (Exception e) {
+      return false;
+    }
+    return true;
   }
 
   private <T extends DomainObject> List<T> getLoadedDataForDomain(Domain domain) {

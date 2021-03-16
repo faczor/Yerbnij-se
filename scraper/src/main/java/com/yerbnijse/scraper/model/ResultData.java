@@ -3,6 +3,7 @@ package com.yerbnijse.scraper.model;
 import com.yerbnijse.scraper.scrapingTool.Strategy;
 import com.yerbnijse.scraper.scrapingTool.Transformer;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.jsoup.nodes.Element;
 @ToString
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 public class ResultData {
   private String domainName;
   private String productName;

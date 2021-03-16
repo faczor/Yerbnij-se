@@ -1,6 +1,8 @@
 package com.yerbnijse.scraper.scrapingTool;
 
 import com.yerbnijse.scraper.model.ResultData;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,8 +17,8 @@ import java.util.LinkedList;
 @RequiredArgsConstructor
 public class ScrapingTool {
 
-  /*@Value("#{new Boolean('${app.testing}')}")
-  private boolean isTest;*/
+  @Value("app.testing")
+  private String isTest;
 
   private final StrategyFactory strategyFactory;
 
@@ -24,7 +26,7 @@ public class ScrapingTool {
   public void processPage(ScrapingEvent event) {
     Strategy strategy = strategyFactory.of(event.getDomain());
     LinkedList<ResultData> resultData = new LinkedList<>();
-    Client client = new Client(true);
+    Client client = new Client(isTest);
     Transformer transformer = TransformerFactory.of(event.getDomain());
     for (int i = 0; i < strategy.getProductListLink().size(); i++) {
       Document domainResponse = Jsoup.parse(client.request(strategy, i));
@@ -33,7 +35,7 @@ public class ScrapingTool {
       }
     }
     cleanFromUnknownItems(resultData);
-    boolean result = client.pushData(resultData);
+    boolean result = client.pushData(resultData.stream().distinct().collect(Collectors.toList()));
     System.out.println(result);
   }
 

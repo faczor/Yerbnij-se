@@ -1,6 +1,8 @@
 package com.yerbnijse.wholesaler.model;
 
 import com.yerbnijse.wholesaler.dto.DomainData;
+import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode.Exclude;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,6 +28,7 @@ public class DomainObject {
     domainObject.setProductPrice(data.getProductPrice());
     domainObject.setProductImage(data.getProductImage());
     domainObject.setIncomingDate(LocalDateTime.now());
+    domainObject.setProductLink(data.getProductLink());
     domainObject.setIsVisible(true);
     return domainObject;
   }
