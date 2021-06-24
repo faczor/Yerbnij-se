@@ -10,9 +10,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class PoyerbaniTransformer implements Transformer {
+
   @Override
   public Pair<String, Integer> extractFromTitle(String title) {
     ArrayList<String> list = new ArrayList<>(Arrays.asList(title.split(" ")));
+    for (int i = 0; i < list.size(); i++) {
+      if (list.get(i).equals(" ") || list.get(i).isBlank()) {
+        list.remove(i);
+        break;
+      }
+    }
     Integer amount = getAmount(list);
     return ImmutablePair.of(String.join(" ", list), amount);
   }
@@ -32,8 +39,13 @@ public class PoyerbaniTransformer implements Transformer {
           amount = titleSplit.get(titleSplit.size() - 1);
           titleSplit.remove(amount);
         }
-        amount = amount.replace("kg", "").replace(" ", "").replace("0,", "");
-        return Integer.parseInt(amount) * 1000;
+        if (amount.contains(",")) {
+          amount = amount.replace("kg", "").replace(" ", "").replace("0,", "");
+          return Integer.parseInt(amount) * 100;
+        } else {
+          amount = amount.replace("kg", "").replace(" ", "").replace("0,", "");
+          return Integer.parseInt(amount) * 1000;
+        }
       } else {
         optionalAmount = titleSplit.stream().filter(x -> x.contains("0g")).findFirst();
         if (optionalAmount.isPresent()) {
