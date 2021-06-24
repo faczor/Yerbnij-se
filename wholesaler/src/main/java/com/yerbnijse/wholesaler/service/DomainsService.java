@@ -71,13 +71,12 @@ public class DomainsService {
   public boolean pushData(List<DomainOutput> data) {
     try {
       CloseableHttpClient client = HttpClients.createDefault();
-      HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/offer/add");
-      String json = new Gson().toJson(data);
-      StringEntity entity = new StringEntity(json, "UTF-8");
+      HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/user/offer/add");
+      StringEntity entity = new StringEntity(new Gson().toJson(data), "UTF-8");
       httpPost.setEntity(entity);
       httpPost.setHeader("Accept", "application/json");
       httpPost.setHeader("Content-type", "application/json");
-      CloseableHttpResponse response = client.execute(httpPost);
+      client.execute(httpPost);
       client.close();
     } catch (Exception e) {
       return false;

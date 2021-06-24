@@ -1,8 +1,6 @@
 package com.yerbnijse.wholesaler.model;
 
 import com.yerbnijse.wholesaler.dto.DomainData;
-import lombok.EqualsAndHashCode;
-import lombok.EqualsAndHashCode.Exclude;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -1,0 +1,114 @@
+spring:
+  application:
+    name: yerbnijse
+  datasource:
+    url: jdbc:mysql://mysql:3306/${spring.application.name}?serverTimezone=Europe/Amsterdam&characterEncoding=UTF-8&useSSL=false&createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        naming:
+          physical-strategy: MySQLUpperCaseStrategy
+  flyway:
+    schemas: ${spring.application.name}
+    url: jdbc:mysql://mysql:3306/${spring.application.name}?serverTimezone=Europe/Amsterdam&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    locations: classpath:/migration
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    validate-on-migrate: false
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            clientId: 388478202579004
+            clientSecret: bbffcaa7e5b66bfdf09f3cc6338fed06
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - public_profile
+          google:
+            clientId: 385367231890-qngsskkahcgeum1j5092a70g16m66b06.apps.googleusercontent.com
+            clientSecret: IgLlPcI471rZCvSU-RscYYtC
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+        provider:
+          facebook:
+            authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
+            tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
+            userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
+
+mail:
+  host: smtp.gmail.com
+  port: 587
+  username: yerbnijsie@gmail.com
+  password: Yerbnijsie123
+
+logging:
+  file:
+    name: ${spring.application.name}.log
+springdoc:
+  swagger-ui:
+    path: api-docs
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+app:
+  ouath2:
+    authorizedRedirectUri: http://localhost:82/ouath2/redirect
+  jwtSecret: verySecretKey
+  jwtExpirationMs: 86400000
+---
+spring:
+  config:
+    activate:
+      on-profile: local-docker
+  jpa:
+    show-sql: true
+  datasource:
+    username: root
+    password: root
+app:
+  server:
+    host: http://localhost:81
+  web:
+    host: http://localhost:82
+  ouath2:
+    authorizedRedirectUri: http://localhost:3000/ouath2/redirect
+  cookie:
+    expire: 180
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    username: ${spring.application.name}
+    password: ${spring.application.name}
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3308/${spring.application.name}?serverTimezone=Europe/Amsterdam&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+  flyway:
+    url: jdbc:mysql://localhost:3308/${spring.application.name}?serverTimezone=Europe/Amsterdam&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+app:
+  server:
+    host: http://localhost:8080
+  web:
+    host: http://localhost:3000
+  scrapper:
+    host: http://localhost:8081
