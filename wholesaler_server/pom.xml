@@ -9,11 +9,11 @@
     <version>2.4.0</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>com.mayeryn</groupId>
-  <artifactId>cms</artifactId>
+  <groupId>com.yerbnijse</groupId>
+  <artifactId>wholesaler</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>cms</name>
-  <description>M-CMS project</description>
+  <name>wholesaler</name>
+  <description>wholesaler for yerbijse</description>
 
   <properties>
     <java.version>14</java.version>
@@ -31,17 +31,11 @@
       <version>2.4.0</version>
     </dependency>
 
-    <!-- Data base dependencies -->
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-mongodb</artifactId>
-      <version>3.1.2</version>
-    </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
+
     <!-- Graphql dependencies -->
     <dependency>
       <groupId>com.graphql-java</groupId>
@@ -107,48 +101,6 @@
         <configuration>
           <source>14</source>
           <target>14</target>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>com.theoryinpractise</groupId>
-        <artifactId>googleformatter-maven-plugin</artifactId>
-        <version>1.7.3</version>
-        <executions>
-          <execution>
-            <id>reformat-sources</id>
-            <configuration>
-              <includeStale>false</includeStale>
-              <style>GOOGLE</style>
-              <filterModified>false</filterModified>
-              <skip>false</skip>
-              <fixImports>false</fixImports>
-              <maxLineLength>100</maxLineLength>
-            </configuration>
-            <goals>
-              <goal>format</goal>
-            </goals>
-            <phase>process-sources</phase>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.1</version>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>8.7</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <!-- <violationSeverity>warning</violationSeverity> -->
-          <consoleOutput>true</consoleOutput>
-          <encoding>UTF-8</encoding>
-          <configLocation>google_checks.xml</configLocation>
         </configuration>
       </plugin>
     </plugins>

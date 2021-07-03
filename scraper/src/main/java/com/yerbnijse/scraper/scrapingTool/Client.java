@@ -3,26 +3,25 @@ package com.yerbnijse.scraper.scrapingTool;
 import com.google.gson.Gson;
 import com.yerbnijse.scraper.model.ResultData;
 import com.yerbnijse.scraper.utils.FileUtils;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class Client {
 
   private final String isTest;
   private final OkHttpClient client;
+  private final String warehouseUrl;
 
-  public Client(String isTest) {
-    this.client = createClient();
+  public Client(String isTest, String warehouseUrl) {
     this.isTest = isTest;
+    this.client = createClient();
+    this.warehouseUrl = warehouseUrl;
   }
 
   public String request(Strategy strategy, int iteration) {
@@ -32,26 +31,22 @@ public class Client {
     try (Response response = client.newCall(request).execute()) {
       return response.body() != null ? response.body().string() : "";
     } catch (IOException e) {
+      log.error("Coś poszło nie tak przy scrapowaniu strony. Exception: " + e);
       return "";
     }
   }
 
   public boolean pushData(List<ResultData> data) {
-    try {
-      CloseableHttpClient client = HttpClients.createDefault();
-      HttpPost httpPost = new HttpPost("http://localhost:8082/domain");
-      String json = new Gson().toJson(data);
-      StringEntity entity = new StringEntity(json, "UTF-8");
-      httpPost.setEntity(entity);
-      httpPost.setHeader("Accept", "application/json");
-      httpPost.setHeader("Content-type", "application/json");
-      CloseableHttpResponse response = client.execute(httpPost);
-      System.out.println(data);
-      client.close();
-    } catch (Exception e) {
+    System.out.println("NEWWW");
+    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), new Gson().toJson(data));
+    Request request = new Request.Builder().url(warehouseUrl + "/domain").post(body).build();
+    try (Response response = client.newCall(request).execute()){
+      return response.body() != null;
+    } catch (IOException e) {
+      log.error("Coś poszło nie tak przy przekazywaniu danych do hurtowni. Exception: " + e);
+      e.printStackTrace();
       return false;
     }
-    return true;
   }
 
   private OkHttpClient createClient() {

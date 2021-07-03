@@ -22,11 +22,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
@@ -34,8 +37,11 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FilterService {
+
+	@Value("${app.warehouse.host}")
+	private String warehouseUrl;
 
 	private final FilterRepository filterRepository;
 	private final UserAuthService authService;
@@ -88,10 +94,23 @@ public class FilterService {
 		}
 	}
 
+	@EventListener(ApplicationReadyEvent.class)
+	public void tmp() {
+		log.error("INFO");
+		log.error("INFO");
+		log.error("INFO");
+		log.error("INFO");
+		log.error("INFO");
+		log.error("INFO");
+		log.error("INFO");
+		log.error("INFO");
+	}
+
 	@EventListener(WarehousePushEvent.class)
 	public void pushToWareHouse(WarehousePushEvent event) {
 		try (CloseableHttpClient client = HttpClients.createDefault()) {
-			HttpPost httpPost = new HttpPost("http://localhost:8082/user/action");
+			log.info(warehouseUrl);
+			HttpPost httpPost = new HttpPost(warehouseUrl + "/user/action");
 			httpPost.setEntity(new StringEntity(event.getParam()));
 			client.execute(httpPost);
 		} catch (Exception ex) {

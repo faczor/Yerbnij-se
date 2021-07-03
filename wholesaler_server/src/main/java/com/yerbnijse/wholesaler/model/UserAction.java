@@ -10,8 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @Document(collection = "UserAction")
 public class UserAction {
-  @Id
-  private String id;
+  @Id private String id;
   private String param;
   private LocalDateTime date;
 

@@ -16,8 +16,8 @@ spring:
     schemas: ${spring.application.name}
     url: jdbc:mysql://mysql:3306/${spring.application.name}?serverTimezone=Europe/Amsterdam&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
     locations: classpath:/migration
-    user: ${spring.datasource.username}
-    password: ${spring.datasource.password}
+    user: root
+    password: root
     validate-on-migrate: false
   security:
     oauth2:
@@ -51,7 +51,7 @@ mail:
 
 logging:
   file:
-    name: ${spring.application.name}.log
+    name: './logs/server.log'
 springdoc:
   swagger-ui:
     path: api-docs
@@ -64,11 +64,19 @@ app:
     authorizedRedirectUri: http://localhost:82/ouath2/redirect
   jwtSecret: verySecretKey
   jwtExpirationMs: 86400000
+  server:
+    host: http://localhost:8080
+  web:
+    host: http://localhost:3000
+  scrapper:
+    host: http://localhost:8081
+  warehouse:
+    host: http://localhost:8082
 ---
 spring:
   config:
     activate:
-      on-profile: local-docker
+      on-profile: docker
   jpa:
     show-sql: true
   datasource:
@@ -78,20 +86,15 @@ app:
   server:
     host: http://localhost:81
   web:
-    host: http://localhost:82
+    host: http://localhost:8080
+  scrapper:
+    host: http://scraper:8081
+  warehouse:
+    host: http://wholesaler-server:8082
   ouath2:
     authorizedRedirectUri: http://localhost:3000/ouath2/redirect
   cookie:
     expire: 180
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-  datasource:
-    username: ${spring.application.name}
-    password: ${spring.application.name}
 ---
 spring:
   config:
@@ -105,10 +108,3 @@ spring:
     show-sql: true
   flyway:
     url: jdbc:mysql://localhost:3308/${spring.application.name}?serverTimezone=Europe/Amsterdam&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
-app:
-  server:
-    host: http://localhost:8080
-  web:
-    host: http://localhost:3000
-  scrapper:
-    host: http://localhost:8081

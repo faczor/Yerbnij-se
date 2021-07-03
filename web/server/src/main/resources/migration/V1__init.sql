@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS Portals
     PortalId     INTEGER      NOT NULL AUTO_INCREMENT,
     Name         VARCHAR(128) NOT NULL UNIQUE,
     Link         VARCHAR(128) NOT NULL,
-    ScrapDate    DATETIME,
-    LastResponse INTEGER,
+    ScrapDate    DATETIME DEFAULT NOW(),
+    LastResponse INTEGER DEFAULT 500,
     Code         VARCHAR(128) NOT NULL UNIQUE,
     Logo         VARCHAR(128),
     PRIMARY KEY (PortalId)

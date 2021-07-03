@@ -16,7 +16,7 @@ public class DobreZiele extends DomainObject {
 
   public static List<DobreZiele> dynamicCast(List<DomainObject> domainObjects) {
     List<DobreZiele> result = new ArrayList<>();
-    for (DomainObject domainObj: domainObjects) {
+    for (DomainObject domainObj : domainObjects) {
       if (domainObj instanceof DobreZiele) {
         result.add((DobreZiele) domainObj);
       } else {

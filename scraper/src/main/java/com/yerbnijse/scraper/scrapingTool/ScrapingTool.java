@@ -17,7 +17,9 @@ import java.util.LinkedList;
 @RequiredArgsConstructor
 public class ScrapingTool {
 
-  @Value("app.testing")
+  @Value("${app.warehouse.host}")
+  private String warehouseUrl;
+  @Value("${app.testing}")
   private String isTest;
 
   private final StrategyFactory strategyFactory;
@@ -26,7 +28,7 @@ public class ScrapingTool {
   public void processPage(ScrapingEvent event) {
     Strategy strategy = strategyFactory.of(event.getDomain());
     LinkedList<ResultData> resultData = new LinkedList<>();
-    Client client = new Client(isTest);
+    Client client = new Client(isTest, warehouseUrl);
     Transformer transformer = TransformerFactory.of(event.getDomain());
     for (int i = 0; i < strategy.getProductListLink().size(); i++) {
       Document domainResponse = Jsoup.parse(client.request(strategy, i));

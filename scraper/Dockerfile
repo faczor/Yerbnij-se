@@ -1,7 +1,12 @@
-FROM openjdk:15-jdk-buster
+FROM maven:3.6.3-openjdk-15
+COPY . /server
+WORKDIR /server
+ENV WAIT_VERSION 2.7.3
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
 
-RUN apt update && apt install -y maven && mvn install -DskipTests
+RUN mvn install -DskipTests
 
 EXPOSE 8081
 
-CMD mvn clean && mvn spring-boot:run -Dspring.profiles.active=local
+CMD sh -c "/wait && mvn clean && mvn spring-boot:run -Dspring.profiles.active=local-docker"

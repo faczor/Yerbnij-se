@@ -1,4 +1,18 @@
 server:
   port: 8081
 app:
-  testing: "TEST"
+  testing: TEST
+  wholesaler:
+    host: http://localhost:8082
+logging:
+  file:
+    name: './logs/server.log'
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+app:
+  testing: false
+  warehouse:
+    host: http://wholesaler-server:8082

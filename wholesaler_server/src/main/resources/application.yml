@@ -1,0 +1,14 @@
+server.port: 8082
+spring.data.mongodb:
+  port: 27017
+  host: mongodb
+  database: wholesaler
+logging:
+  file:
+    name: './logs/server.log'
+---
+spring.config:
+  activate:
+    on-profile: docker
+app.web.host: http://web-server:8080
+

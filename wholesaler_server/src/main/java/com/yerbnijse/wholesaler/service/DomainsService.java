@@ -9,11 +9,14 @@ import com.yerbnijse.wholesaler.repository.DobreZieleRepository;
 import com.yerbnijse.wholesaler.repository.PoyerbaniRepository;
 import com.yerbnijse.wholesaler.repository.UnMateRepository;
 import lombok.AllArgsConstructor;
-import org.apache.http.client.methods.CloseableHttpResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +26,13 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DomainsService {
+
+  @Value("${app.web.host}")
+  private String serverUrl;
 
   private final DobreZieleRepository dzRepository;
   private final UnMateRepository unMateRepository;
@@ -59,7 +66,6 @@ public class DomainsService {
         }
       }
     }
-
     saveData(dataToLoad, event.getDomain());
 
     if (!dataToLoad.isEmpty()) {
@@ -69,16 +75,17 @@ public class DomainsService {
   }
 
   public boolean pushData(List<DomainOutput> data) {
-    try {
-      CloseableHttpClient client = HttpClients.createDefault();
-      HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/user/offer/add");
+    try (CloseableHttpClient client = HttpClients.createDefault()){
+      HttpPost httpPost = new HttpPost(serverUrl + "/api/v1/user/offer/add");
       StringEntity entity = new StringEntity(new Gson().toJson(data), "UTF-8");
       httpPost.setEntity(entity);
       httpPost.setHeader("Accept", "application/json");
       httpPost.setHeader("Content-type", "application/json");
       client.execute(httpPost);
-      client.close();
+      log.info("Poprawnie wypchnięto nowe dane do serwera webowego");
     } catch (Exception e) {
+      log.error("Błąd przy wypychaniu danych do servera webowego. Exception: " + e);
+      e.printStackTrace();
       return false;
     }
     return true;

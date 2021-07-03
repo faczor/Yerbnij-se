@@ -16,7 +16,7 @@ public class Poyerbani extends DomainObject {
 
   public static List<Poyerbani> dynamicCast(List<DomainObject> domainObjects) {
     List<Poyerbani> result = new ArrayList<>();
-    for (DomainObject domainObj: domainObjects) {
+    for (DomainObject domainObj : domainObjects) {
       if (domainObj instanceof Poyerbani) {
         result.add((Poyerbani) domainObj);
       } else {
