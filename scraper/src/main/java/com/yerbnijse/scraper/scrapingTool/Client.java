@@ -47,7 +47,7 @@ public class Client {
             new Gson().toJson(data));
     Request request = new Request.Builder().url(warehouseUrl + "/domain").post(body).build();
     try (Response ignored = client.newCall(request).execute()) {
-      log.info("Poprawnie przekazano dane do hurtowni. Ciało: " + body.toString());
+      log.info("Poprawnie przekazano dane do hurtowni.");
     } catch (IOException e) {
       log.error("Coś poszło nie tak przy przekazywaniu danych do hurtowni. Exception: " + e);
       e.printStackTrace();
