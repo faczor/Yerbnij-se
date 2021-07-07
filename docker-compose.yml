@@ -26,7 +26,7 @@ services:
     depends_on:
       - mongodb
     ports:
-      - 8082:8082
+      - 82:8082
   scraper:
     build: ./scraper
     environment:
@@ -37,12 +37,12 @@ services:
     links:
       - wholesaler-server
     ports:
-      - 8081:8081
+      - 81:8081
   mysql:
     image: mysql:8
     restart: always
     ports:
-      - 3306:3306
+      - 3308:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=yerbnijse
@@ -56,7 +56,7 @@ services:
     depends_on:
       - mysql
     ports:
-      - 8080:8080
+      - 80:8080
   web_ui:
     build: ./web/web
     command: bash -c "npm install && npm start"
@@ -66,4 +66,4 @@ services:
       - web-server
     stdin_open: true
     ports:
-      - 82:3000
+      - 84:3000

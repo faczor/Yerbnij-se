@@ -1,6 +1,6 @@
 package com.yerbnijse.webservice.controller;
 
-import com.yerbnijse.webservice.model.dto.input.PasswordInput;
+import com.yerbnijse.webservice.model.dto.input.ChangePasswordInput;
 import com.yerbnijse.webservice.model.dto.input.PersonalDataInput;
 import com.yerbnijse.webservice.service.UserService;
 import javax.validation.Valid;
@@ -26,7 +26,7 @@ public class UserController {
 	}
 
 	@PutMapping("/password")
-	public ResponseEntity<?> editPassword(@RequestBody @Valid PasswordInput input) {
+	public ResponseEntity<?> editPassword(@RequestBody @Valid ChangePasswordInput input) {
 		return ResponseEntity.ok(userService.changePassword(input));
 	}
 }

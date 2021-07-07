@@ -1,7 +1,5 @@
-package com.yerbnijse.wholesaler.dto;
+package com.yerbnijse.wholesaler.model;
 
-import com.yerbnijse.wholesaler.model.Domain;
-import com.yerbnijse.wholesaler.model.DomainObject;
 import lombok.Getter;
 import lombok.Setter;
 

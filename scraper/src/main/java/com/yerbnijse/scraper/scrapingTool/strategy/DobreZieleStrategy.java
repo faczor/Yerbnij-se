@@ -1,13 +1,12 @@
 package com.yerbnijse.scraper.scrapingTool.strategy;
 
 import com.yerbnijse.scraper.scrapingTool.Strategy;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class DobreZieleStrategy implements Strategy {
@@ -38,7 +37,10 @@ public class DobreZieleStrategy implements Strategy {
 
   @Override
   public String extractImage(Element product) {
-    return StringUtils.substringBetween(product.select("a[href^=https://dobreziele.pl]").first().attr("style"), "background-image:url(", ")");
+    return StringUtils.substringBetween(
+        product.select("a[href^=https://dobreziele.pl]").first().attr("style"),
+        "background-image:url(",
+        ")");
   }
 
   @Override

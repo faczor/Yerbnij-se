@@ -1,7 +1,7 @@
 package com.yerbnijse.scraper.scrapingTool;
 
 import com.yerbnijse.scraper.model.ResultData;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -11,18 +11,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
-
 @Component
 @RequiredArgsConstructor
 public class ScrapingTool {
 
+  private final StrategyFactory strategyFactory;
   @Value("${app.warehouse.host}")
   private String warehouseUrl;
   @Value("${app.testing}")
   private String isTest;
-
-  private final StrategyFactory strategyFactory;
 
   @EventListener
   public void processPage(ScrapingEvent event) {
@@ -37,8 +34,7 @@ public class ScrapingTool {
       }
     }
     cleanFromUnknownItems(resultData);
-    boolean result = client.pushData(resultData.stream().distinct().collect(Collectors.toList()));
-    System.out.println(result);
+    client.pushData(resultData.stream().distinct().collect(Collectors.toList()));
   }
 
   private void cleanFromUnknownItems(LinkedList<ResultData> resultData) {

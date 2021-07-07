@@ -1,7 +1,5 @@
-package com.yerbnijse.wholesaler.configuration;
+package com.yerbnijse.wholesaler.model;
 
-import com.yerbnijse.wholesaler.dto.DomainData;
-import com.yerbnijse.wholesaler.model.Domain;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEvent;

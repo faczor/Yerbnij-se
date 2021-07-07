@@ -1,6 +1,6 @@
 package com.yerbnijse.wholesaler.service;
 
-import com.yerbnijse.wholesaler.configuration.UserActionEvent;
+import com.yerbnijse.wholesaler.model.UserActionEvent;
 import com.yerbnijse.wholesaler.model.UserAction;
 import com.yerbnijse.wholesaler.repository.UserActionRepository;
 import lombok.AllArgsConstructor;

@@ -1,15 +1,17 @@
 package com.yerbnijse.wholesaler.controller;
 
-import com.yerbnijse.wholesaler.configuration.ScrapingEvent;
-import com.yerbnijse.wholesaler.configuration.UserActionEvent;
-import com.yerbnijse.wholesaler.dto.DomainData;
+import com.yerbnijse.wholesaler.model.ScrapingEvent;
+import com.yerbnijse.wholesaler.model.UserActionEvent;
+import com.yerbnijse.wholesaler.model.DomainData;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @CrossOrigin(origins = {"http://localhost:8081", "http://localhost:8080"})
@@ -19,12 +21,15 @@ public class DomainController {
 
   @GetMapping("/")
   public ResponseEntity<?> getIt() {
-    System.out.println("GET IT PPLSS");
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/domain")
   public ResponseEntity<?> getData(@RequestBody List<DomainData> data) {
+    if (data.isEmpty()) {
+      log.error("Błąd przy odbieraniu ofert, lista jest pusta.");
+      return ResponseEntity.ok().build();
+    }
     eventPublisher.publishEvent(new ScrapingEvent(this, data));
     return ResponseEntity.ok().build();
   }

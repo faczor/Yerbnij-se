@@ -37,10 +37,10 @@ export const portals = {
     label: 'Dobre ziele',
     value: 'DOBRE_ZIELE',
   },
-  UN_MATE: {
+  /*UN_MATE: {
     label: 'Unmate',
     value: 'UN_MATE',
-  },
+  },*/
   POYERBANI: {
     label: 'Poyerbani',
     value: 'POYERBANI',

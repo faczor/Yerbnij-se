@@ -5,6 +5,7 @@ import com.yerbnijse.webservice.service.MailService;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +20,8 @@ public class PublicController {
   public final MailService mailService;
 
   @PostMapping("/contact")
-  public ResponseEntity<?> contact(@RequestBody @Valid ContactDto dto) {
-    //mailService.contact(dto);
+  public ResponseEntity<?> contact(@RequestBody @Valid ContactDto dto, Authentication authentication) {
+    mailService.contact(dto, authentication.getName());
     return ResponseEntity.ok().build();
   }
 }

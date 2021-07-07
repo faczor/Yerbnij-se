@@ -8,27 +8,14 @@ import { ControlForm, ErrorAlert } from 'm-web-components';
 import { Buttons, Form, StyledTextArea, StyledInput } from './ContactForm.css';
 
 const ContactForm = ({
-  errors,
-  control,
-  errorsMessages,
-  handleSubmit,
-  onSubmit,
-  setOpen,
-}) => {
+                       errors,
+                       control,
+                       errorsMessages,
+                       handleSubmit,
+                       onSubmit,
+                       setOpen,
+                     }) => {
   const formFields = [
-    {
-      as: (
-        <StyledInput
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-      ),
-      name: 'email',
-      label: 'Adres e-mail',
-      rules: { required: 'To pole jest wymagane' },
-      type: 'text',
-    },
     {
       as: (
         <StyledInput
@@ -74,9 +61,7 @@ const ContactForm = ({
     <>
       <Form>
         <h4>Formularz kontaktowy</h4>
-
         {fields}
-
         <Buttons>
           <S.FiltersButtonToggle
             type='button'

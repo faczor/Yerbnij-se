@@ -38,9 +38,9 @@ CREATE TABLE IF NOT EXISTS Portals
 INSERT INTO Portals(Name, Link, Logo, Code)
 VALUES ('Dobre ziele', 'https://dobreziele.pl', 'https://dobreziele.pl/tpl/modern/img/logo.png',
         'DOBRE_ZIELE'),
-       ('Un-mate', 'https://www.un-mate.pl',
-        'https://un-mate.pl/bundles/_themes/unmate/unmate-theme/app/images/logo_unmate.png?20210416v1',
-        'UN_MATE'),
+--      ('Un-mate', 'https://www.un-mate.pl',
+--       'https://un-mate.pl/wp-content/uploads/2021/04/un-mate-logotipo.png',
+--       'UN_MATE'),
        ('Poyerbani', 'https://www.poyerbani.pl',
         'https://www.poyerbani.pl/data/gfx/mask/pol/logo_1_big.png', 'POYERBANI');
 

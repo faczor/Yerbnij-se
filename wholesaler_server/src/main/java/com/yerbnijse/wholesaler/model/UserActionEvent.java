@@ -1,4 +1,4 @@
-package com.yerbnijse.wholesaler.configuration;
+package com.yerbnijse.wholesaler.model;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

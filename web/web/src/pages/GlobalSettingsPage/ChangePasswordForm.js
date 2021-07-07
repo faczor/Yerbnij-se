@@ -68,7 +68,7 @@ const ChangePasswordForm = () => {
     } catch (e) {
       if (!e?.data?.errors) {
         toast.error(
-          'Coś poszło nie tak, spróbuj ponownie lub skontaktuj się z administratorem',
+          e?.response?.data[0].defaultMessage,
         );
       }
       return e?.response;

@@ -169,7 +169,7 @@ public class UserAuthService {
 		user.setPassword(encoder.encode(newPassword));
 		userRepository.save(user);
 		eventPublisher.publishEvent(
-				new OnSentEmailEvent(user.getEmail(), "Przypomnienie hasła - Portal rekrutacyjny Zabrze",
+				new OnSentEmailEvent(user.getEmail(), "Przypomnienie hasła - Portal Yerbnij se",
 						format("Nowe hasło to: %s \n Należy zmienić je po zalogowaniu", newPassword)));
 		log.info(format("Użytkownik o emailu %s wymusił reset hasła.", user.getEmail()));
 		return "Nowe hasło zostało wysłane";

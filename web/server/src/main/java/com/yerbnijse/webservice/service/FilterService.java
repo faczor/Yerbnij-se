@@ -94,18 +94,6 @@ public class FilterService {
 		}
 	}
 
-	@EventListener(ApplicationReadyEvent.class)
-	public void tmp() {
-		log.error("INFO");
-		log.error("INFO");
-		log.error("INFO");
-		log.error("INFO");
-		log.error("INFO");
-		log.error("INFO");
-		log.error("INFO");
-		log.error("INFO");
-	}
-
 	@EventListener(WarehousePushEvent.class)
 	public void pushToWareHouse(WarehousePushEvent event) {
 		try (CloseableHttpClient client = HttpClients.createDefault()) {

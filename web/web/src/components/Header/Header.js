@@ -37,7 +37,7 @@ const menuItemsListAdmin = [
   },
   {
     label: 'Ustawienia',
-    to: routes.user.settings,
+    to: '/admin/settings',
     icon: <SettingsIcon style={{ color: iconColors }} />,
   },
 ];

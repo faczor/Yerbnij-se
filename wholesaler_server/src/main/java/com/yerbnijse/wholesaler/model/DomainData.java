@@ -1,4 +1,4 @@
-package com.yerbnijse.wholesaler.dto;
+package com.yerbnijse.wholesaler.model;
 
 import lombok.Getter;
 import lombok.Setter;

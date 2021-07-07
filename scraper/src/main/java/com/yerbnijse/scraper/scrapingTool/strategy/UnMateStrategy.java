@@ -56,9 +56,9 @@ public class UnMateStrategy implements Strategy {
 
   private List<String> setLinks() {
     List<String> links = new ArrayList<>();
-    String path = "https://un-mate.pl/kategoria/yerba-mate";
-    for (int i = 1; i < 10; i++)
-      links.add(path + "?page=" + i);
+    String path = "https://un-mate.pl/yerba-mate/page/";
+    for (int i = 1; i <= 11; i++)
+      links.add(path + "" + i);
     return links;
   }
 }

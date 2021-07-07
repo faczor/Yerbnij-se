@@ -1,9 +1,9 @@
 server:
   port: 8081
 app:
-  testing: TEST
-  wholesaler:
-    host: http://localhost:8082
+  testing: false
+  warehouse:
+    host: http://localhost:82
 logging:
   file:
     name: './logs/server.log'

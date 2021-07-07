@@ -47,7 +47,10 @@ mail:
   host: smtp.gmail.com
   port: 587
   username: yerbnijsie@gmail.com
-  password: Yerbnijsie123
+  password: Yerbnijse123.
+  smtp:
+    auth: true
+    starttls.enable: true
 
 logging:
   file:
@@ -67,7 +70,7 @@ app:
   server:
     host: http://localhost:8080
   web:
-    host: http://localhost:3000
+    host: http://localhost:84
   scrapper:
     host: http://localhost:8081
   warehouse:

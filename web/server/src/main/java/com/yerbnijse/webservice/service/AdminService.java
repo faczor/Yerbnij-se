@@ -6,6 +6,7 @@ import com.yerbnijse.webservice.model.dto.FieldValidator;
 import com.yerbnijse.webservice.model.dto.Pagination;
 import com.yerbnijse.webservice.model.dto.PagingResult;
 import com.yerbnijse.webservice.model.dto.input.PasswordChangeInput;
+import com.yerbnijse.webservice.model.dto.input.RegisterInput;
 import com.yerbnijse.webservice.model.dto.output.UserAdminListDto;
 import com.yerbnijse.webservice.model.exception.ControllerValidationException;
 import com.yerbnijse.webservice.repository.UserRepository;
@@ -88,5 +89,9 @@ public class AdminService {
     log.info(String.format("Użytkownik %s zmienił rolę użytkownika %s na: %s",
         authService.logUser(), user.getEmail(), user.getRole().getName()));
     userRepository.save(user);
+  }
+
+  public void registerUser(Roles roles, RegisterInput input) {
+    authService.registerUser(input, roles);
   }
 }
