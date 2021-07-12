@@ -36,7 +36,7 @@ public class DobreZieleStrategy implements Strategy {
   }
 
   @Override
-  public String extractImage(Element product) {
+  public String extractImage(Element product, String url) {
     return StringUtils.substringBetween(
         product.select("a[href^=https://dobreziele.pl]").first().attr("style"),
         "background-image:url(",

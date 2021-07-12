@@ -17,7 +17,7 @@ public interface Strategy {
 
   String extractPrice(Element element);
 
-  String extractImage(Element element);
+  String extractImage(Element element, String url);
 
   String extractLink(Element element);
 

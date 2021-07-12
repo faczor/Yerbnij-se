@@ -1,6 +1,8 @@
 package com.yerbnijse.scraper.scrapingTool.strategy;
 
 import com.yerbnijse.scraper.scrapingTool.Strategy;
+import lombok.SneakyThrows;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -40,8 +42,10 @@ public class PoyerbaniStrategy implements Strategy {
   }
 
   @Override
-  public String extractImage(Element element) {
-    return "https://www.poyerbani.pl" + element.select("a.product__icon.d-flex.justify-content-center.align-items-center").select("a.product__icon.d-flex.justify-content-center.align-items-center").attr("href");
+  @SneakyThrows
+  public String extractImage(Element element, String url) {
+    Document document = Jsoup.connect(url).get();
+    return "https://www.poyerbani.pl" + document.select("a.photos__link").select("img").attr("data-lazy");
   }
 
   @Override

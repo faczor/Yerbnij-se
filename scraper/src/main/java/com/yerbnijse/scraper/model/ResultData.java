@@ -29,8 +29,8 @@ public class ResultData {
     data.productName = nameAmount.getLeft();
     data.productAmount = nameAmount.getRight();
     data.productPrice = transformer.extractPrice(strategy.extractPrice(element));
-    data.productImage = strategy.extractImage(element);
     data.productLink = strategy.extractLink(element);
+    data.productImage = strategy.extractImage(element, data.productLink);
     return data;
   }
 

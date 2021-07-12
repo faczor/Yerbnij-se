@@ -40,7 +40,7 @@ public class UnMateStrategy implements Strategy {
   }
 
   @Override
-  public String extractImage(Element element) {
+  public String extractImage(Element element, String url) {
     return element.select("div.product-single--un-image-handler").select("img[src^=https://un-mate.pl]").attr("src");
   }
 

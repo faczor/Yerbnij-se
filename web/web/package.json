@@ -49,8 +49,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "build:prod": "env-cmd -f .env.prod npm run-script build",
-    "build:test": "env-cmd -f .env.test npm run-script build",
+    "build:docker": "env-cmd -f .env.docker npm run-script build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
