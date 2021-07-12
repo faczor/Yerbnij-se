@@ -35,13 +35,13 @@ CREATE TABLE IF NOT EXISTS Portals
     PRIMARY KEY (PortalId)
 );
 
-INSERT INTO Portals(Name, Link, Logo, Code)
-VALUES ('Dobre ziele', 'https://dobreziele.pl', 'https://dobreziele.pl/tpl/modern/img/logo.png',
+INSERT INTO Portals(PortalId, Name, Link, Logo, Code)
+VALUES (1, 'Dobre ziele', 'https://dobreziele.pl', 'https://dobreziele.pl/tpl/modern/img/logo.png',
         'DOBRE_ZIELE'),
---      ('Un-mate', 'https://www.un-mate.pl',
+--      (2, 'Un-mate', 'https://www.un-mate.pl',
 --       'https://un-mate.pl/wp-content/uploads/2021/04/un-mate-logotipo.png',
 --       'UN_MATE'),
-       ('Poyerbani', 'https://www.poyerbani.pl',
+       (3, 'Poyerbani', 'https://www.poyerbani.pl',
         'https://www.poyerbani.pl/data/gfx/mask/pol/logo_1_big.png', 'POYERBANI');
 
 CREATE TABLE IF NOT EXISTS Offers

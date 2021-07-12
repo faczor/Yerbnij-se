@@ -14,6 +14,7 @@ import com.yerbnijse.webservice.model.dto.output.FilterListDto;
 import com.yerbnijse.webservice.model.dto.output.SimpleFilterDto;
 import com.yerbnijse.webservice.model.exception.ControllerValidationException;
 import com.yerbnijse.webservice.repository.FilterRepository;
+import com.yerbnijse.webservice.repository.OfferRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class FilterService {
 	@Value("${app.warehouse.host}")
 	private String warehouseUrl;
 
+	private final OfferRepository offerRepository;
 	private final FilterRepository filterRepository;
 	private final UserAuthService authService;
 	private final ApplicationEventPublisher eventPublisher;
@@ -85,7 +87,7 @@ public class FilterService {
 			for (Filter filter : userFilters.get(user)) {
 				offersToSend.addAll(filter(offersToFilter, filter));
 			}
-			offersToSend = offersToFilter.stream().distinct().collect(Collectors.toList());
+			offersToSend = offersToSend.stream().distinct().collect(Collectors.toList());
 			if (!offersToSend.isEmpty())
 				eventPublisher.publishEvent(new OnSentEmailEvent(user.getEmail(), "Nowe ogłoszenia pasujące do filtra",
 						buildContent(offersToSend)));
@@ -121,17 +123,18 @@ public class FilterService {
 		filterRepository.delete(filter);
 	}
 
-	private String buildContent(List<Offer> offersToSend) {
-		Map<Portal, List<Offer>> offersForPortal = offersToSend.stream()
+	private String buildContent(List<Offer> input) {
+		List<Offer> offersToCheck = offerRepository.findAllById(input.stream().map(Offer::getId).collect(Collectors.toSet()));
+		Map<Portal, List<Offer>> offersForPortal = offersToCheck.stream()
 				.collect(Collectors.groupingBy(Offer::getPortal));
 		StringBuilder builder = new StringBuilder("Nowe oferty które wpłynęły do serwisu: ");
 		Set<Portal> portals = offersForPortal.keySet();
 		for (Portal portal : portals) {
-			builder.append("\n").append("Portal: ").append(portal);
+			builder.append("\n").append("Portal: ").append(portal.getName());
 			List<Offer> offers = offersForPortal.get(portal);
-			for (int i = 1; i < offers.size() + 1; i++) {
+			for (int i = 1; i < offers.size(); i++) {
 				Offer offer = offers.get(i);
-				builder.append("\n").append(i).append("Produkt o nazwie: ").append(offer.getName()).append(" ")
+				builder.append("\n").append(i).append(". ").append("Produkt o nazwie: ").append(offer.getName()).append(" ")
 						.append(offer.getAmount()).append(" g").append(" w cenie: ").append(offer.getPrice())
 						.append(" zł");
 			}

@@ -14,17 +14,27 @@ const Header = styled.h3`
   color: ${({ theme }) => theme.headers};
 `;
 
-const FiltersList = ({ type, filtersTable = [], category, getValues, savedFilters, onFilterAction }) => {
+const FilterButtonsWrapper = styled.div`
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+`;
+
+const FiltersList = ({
+  type,
+  filtersTable = [],
+  category,
+  getValues,
+  savedFilters,
+  onFilterAction,
+}) => {
   const dispatch = useDispatch();
   const nameTable = filtersTable[0]?.nameTable;
 
-  const primaryButtonBg = theme.primaryButtonBackground;
   const filtersValues = useSelector(state => state.filtersTable[nameTable]);
 
   const clearFilters = () => {
-    //clear filterTable reducer
     dispatch(allActions.filtersTableActions.clearFiltersTable(nameTable));
-    //clear pagination reducer
     getValues(type, 'clear', category);
   };
 
@@ -39,7 +49,9 @@ const FiltersList = ({ type, filtersTable = [], category, getValues, savedFilter
       });
       onFilterAction(true);
     } catch (e) {
-      toast.error('Wystąpił błąd, spróbuj później bądź skontaktuj się z administratorem.');
+      toast.error(
+        'Wystąpił błąd, spróbuj później bądź skontaktuj się z administratorem.'
+      );
     }
   };
 
@@ -47,15 +59,17 @@ const FiltersList = ({ type, filtersTable = [], category, getValues, savedFilter
     <>
       <Header>Filtry</Header>
       {nameTable === 'offer' && (
-        <FilterLoader savedFilters={savedFilters} nameTable={nameTable} onFilterAction={onFilterAction}/>
+        <FilterLoader
+          savedFilters={savedFilters}
+          nameTable={nameTable}
+          onFilterAction={onFilterAction}
+        />
       )}
       {filtersTable.map(el => (
         <SingleFilter key={el.nameFilter} {...el} />
       ))}
 
-      <div
-        style={{ display: 'flex', marginTop: '50px', justifyContent: 'center' }}
-      >
+      <FilterButtonsWrapper>
         <FiltersButtonToggle type='button' onClick={clearFilters}>
           Wyczyść filtry
         </FiltersButtonToggle>
@@ -65,23 +79,16 @@ const FiltersList = ({ type, filtersTable = [], category, getValues, savedFilter
             colorType='secondary'
             onClick={onSave}
             padding='5px 10px'
-            margin='0 0 0 20px'
+            margin='0 20px 0 20px'
             style={{ border: 'none', backgroundColor: '#2C5F72' }}
           >
             Zapisz filtr
           </Button>
         )}
-        <Button
-          type='button'
-          colorType='secondary'
-          onClick={onSubmit}
-          padding='5px 10px'
-          margin='0 0 0 20px'
-          style={{ border: 'none', backgroundColor: { primaryButtonBg } }}
-        >
+        <FiltersButtonToggle type='button' onClick={onSubmit}>
           Filtruj
-        </Button>
-      </div>
+        </FiltersButtonToggle>
+      </FilterButtonsWrapper>
     </>
   );
 };

@@ -59,7 +59,7 @@ services:
       - 80:8080
   web_ui:
     build: ./web/web
-    command: bash -c "npm install && npm start"
+    command: bash -c "npm run build:docker && serve -l 3000 -s build"
     links:
       - web-server
     depends_on:

@@ -68,7 +68,7 @@ app:
   jwtSecret: verySecretKey
   jwtExpirationMs: 86400000
   server:
-    host: http://localhost:8080
+    host: http://localhost:3000
   web:
     host: http://localhost:84
   scrapper:
@@ -89,7 +89,7 @@ app:
   server:
     host: http://localhost:81
   web:
-    host: http://localhost:8080
+    host: http://localhost:84
   scrapper:
     host: http://scraper:8081
   warehouse:

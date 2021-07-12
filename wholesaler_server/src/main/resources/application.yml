@@ -12,3 +12,10 @@ spring.config:
     on-profile: docker
 app.web.host: http://web-server:8080
 
+---
+spring.config:
+  activate:
+    on-profile: local
+app.web.host: http://localhost:8080
+spring.data.mongodb:
+  host: localhost

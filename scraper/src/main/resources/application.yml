@@ -1,9 +1,5 @@
 server:
   port: 8081
-app:
-  testing: false
-  warehouse:
-    host: http://localhost:82
 logging:
   file:
     name: './logs/server.log'
@@ -16,3 +12,12 @@ app:
   testing: false
   warehouse:
     host: http://wholesaler-server:8082
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+app:
+  testing: false
+  warehouse:
+    host: http://localhost:8082
